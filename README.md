@@ -1,4 +1,4 @@
-## Build & Run Instructions
+## Build & Run instructions
 ### Requirements
 - Java Development Kit (version 8 min)
 
@@ -9,5 +9,5 @@ To build ScratchOS run:
 `make all`
 
 ## Run Instructions
-for example : 
+After building you can launch for example : 
 `java -jar PARTIE_0/out/jls.jar`
