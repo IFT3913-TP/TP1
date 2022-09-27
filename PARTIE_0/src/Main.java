@@ -56,8 +56,11 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        baseDirectory = new File(scanner.nextLine());
-        System.out.print(getCSVOutput());
+        while (scanner.hasNextLine()) {
+                 baseDirectory = new File(scanner.nextLine().trim());
+                  fileList.clear();
+                System.out.print(getCSVOutput());
+        }
         /*if (args.length == 1) {
             System.out.print(getCSVOutput(baseDirectory));
         } else {

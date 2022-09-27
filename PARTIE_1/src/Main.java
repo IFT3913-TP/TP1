@@ -14,8 +14,10 @@ public class Main {
             System.exit(1);
         }*/
             Scanner scanner = new Scanner(System.in);
-            file = new File(scanner.nextLine());
-            System.out.println(getNonEmptyLinesCount());
+            while (scanner.hasNextLine()) {
+                file = new File(scanner.nextLine().trim());
+                System.out.println(getNonEmptyLinesCount());
+            }
     }
     private static int getNonEmptyLinesCount() {
         int nonEmptyLines = 0;
