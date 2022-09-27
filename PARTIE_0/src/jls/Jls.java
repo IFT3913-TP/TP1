@@ -13,7 +13,7 @@ public class Jls {
         this.fileListSize = 0;
     }
 
-    private void computeFileList(File path) {
+    public void computeFileList(File path) {
         if (this.fileListSize <= 255) {
             File directory = new File(path.getAbsolutePath());
             File[] contents = directory.listFiles();
