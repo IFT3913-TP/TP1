@@ -6,20 +6,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static final ArrayList<String> inputLines = new ArrayList<>();
     private static File file;
-    private static final ArrayList<String> inputLines = new ArrayList<String>();
-    public static void main(String[] args) {
-        if (args.length == 1) {
-            file = new File(args[0].trim());
-            System.out.println(getNonEmptyLinesCount());
-        } else {
-            readFromInput();
-            for (String line : inputLines) {
-                file = new File(line.trim());
-                System.out.println(getNonEmptyLinesCount());
-            }
-        }
-    }
+
     private static int getNonEmptyLinesCount() {
         int nonEmptyLines = 0;
         if (file.exists() && file.canRead() && file.isFile()) {
@@ -35,12 +24,26 @@ public class Main {
         }
         return nonEmptyLines;
     }
+
     private static void readFromInput() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line == null || line.isEmpty()) break;
             inputLines.add(line);
+        }
+    }
+
+    public static void main(String[] args) {
+        if (args.length == 1) {
+            file = new File(args[0].trim());
+            System.out.println(getNonEmptyLinesCount());
+        } else {
+            readFromInput();
+            for (String line : inputLines) {
+                file = new File(line.trim());
+                System.out.println(getNonEmptyLinesCount());
+            }
         }
     }
 }

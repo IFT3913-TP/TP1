@@ -3,10 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    //private static final String[][] fileListTab= new String[256][3];;
-    private static final ArrayList<String[]> fileList = new ArrayList<String[]>();
+    private static final ArrayList<String[]> fileList = new ArrayList<>();
+    private static final ArrayList<String> inputLines = new ArrayList<>();
     private static File baseDirectory;
-    private static final ArrayList<String> inputLines = new ArrayList<String>();
 
     public static void computeFileList(File path) {
         File directory = new File(path.getAbsolutePath());
