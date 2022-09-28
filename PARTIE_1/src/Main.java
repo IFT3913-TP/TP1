@@ -2,22 +2,23 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Main {
     private static File file;
-        public static void main(String[] args) {
-/*        if (args.length == 1) {
-            path = args[0];
+    private static final ArrayList<String> inputLines = new ArrayList<String>();
+    public static void main(String[] args) {
+        if (args.length == 1) {
+            file = new File(args[0].trim());
             System.out.println(getNonEmptyLinesCount());
         } else {
-            System.err.println("Only one argument (the path of the file to analyze) is expected by this program");
-            System.exit(1);
-        }*/
-            Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNextLine()) {
-                file = new File(scanner.nextLine().trim());
+            readFromInput();
+            for (String line : inputLines) {
+                file = new File(line.trim());
                 System.out.println(getNonEmptyLinesCount());
             }
+        }
     }
     private static int getNonEmptyLinesCount() {
         int nonEmptyLines = 0;
@@ -30,7 +31,16 @@ public class Main {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
         }
-    return nonEmptyLines;
+        return nonEmptyLines;
+    }
+    private static void readFromInput() {
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line == null || line.isEmpty()) break;
+            inputLines.add(line);
+        }
     }
 }
