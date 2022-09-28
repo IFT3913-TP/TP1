@@ -4,7 +4,7 @@
 
 **All commands below are supposed to be run from the root folder of the project**
 
-To build ScratchOS run:
+To build all the .jar(s) run:
 
 `make all`
 
