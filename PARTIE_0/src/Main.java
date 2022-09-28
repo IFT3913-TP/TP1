@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    //private static final String[][] fileListTab= new String[256][3];;
-    private static final ArrayList<String[]> fileList = new ArrayList<String[]>();
+    private static final ArrayList<String[]> fileList = new ArrayList<>();
+    private static final ArrayList<String> inputLines = new ArrayList<>();
     private static File baseDirectory;
 
     public static void computeFileList(File path) {
@@ -45,6 +45,7 @@ public class Main {
 
     public static String getCSVOutput() {
         StringBuilder result = new StringBuilder();
+        fileList.clear();
         computeFileList(baseDirectory);
         for (String[] fileInfos : fileList) {
             result.append(fileInfos[0]).append(", ");
@@ -54,18 +55,25 @@ public class Main {
         return result.toString();
     }
 
-    public static void main(String[] args) {
+    private static void readFromInput() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-                 baseDirectory = new File(scanner.nextLine().trim());
-                  fileList.clear();
-                System.out.print(getCSVOutput());
+            String line = scanner.nextLine();
+            if (line.isEmpty()) break;
+            inputLines.add(line);
         }
-        /*if (args.length == 1) {
-            System.out.print(getCSVOutput(baseDirectory));
+    }
+
+    public static void main(String[] args) {
+        if (args.length == 1) {
+            baseDirectory = new File(args[0].trim());
+            System.out.print(getCSVOutput());
         } else {
-            System.err.println("Only one argument (the path of the directory to analyze) is expected by this program");
-            System.exit(1);
-        }*/
+            readFromInput();
+            for (String line : inputLines) {
+                baseDirectory = new File(line.trim());
+                System.out.print(getCSVOutput());
+            }
+        }
     }
 }
