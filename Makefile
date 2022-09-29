@@ -1,4 +1,4 @@
-.PHONY: all clean PARTIE_0 PARTIE_1
+.PHONY: all clean PARTIE_0 PARTIE_1 PARTIE_2
 
 #JAVAC BUILD SETTINGS
 
@@ -13,8 +13,13 @@ PARTIE_1_JAR_NAME = nvloc.jar
 PARTIE_1_SRC_DIR = PARTIE_1/src
 PARTIE_1_OUT_DIR = PARTIE_1/out
 
+#PARTIE_1 TARGET SETTINGS
+PARTIE_2_JAR_NAME = lcsec.jar
+PARTIE_2_SRC_DIR = PARTIE_2/src
+PARTIE_2_OUT_DIR = PARTIE_2/out
+
 #TARGETS DEFINITIONS
-all: PARTIE_0 PARTIE_1
+all: PARTIE_0 PARTIE_1 PARTIE_2
 
 PARTIE_0:
 	javac $(JAVACFLAGS) -d $(PARTIE_0_OUT_DIR)/build $(PARTIE_0_SRC_DIR)/Main.java
@@ -24,6 +29,11 @@ PARTIE_1:
 	javac  $(JAVACFLAGS) -d $(PARTIE_1_OUT_DIR)/build $(PARTIE_1_SRC_DIR)/Main.java
 	jar -cvfe $(PARTIE_1_OUT_DIR)/$(PARTIE_1_JAR_NAME) Main -C $(PARTIE_1_OUT_DIR)/build .
 
+PARTIE_2:
+	javac  $(JAVACFLAGS) -d $(PARTIE_2_OUT_DIR)/build $(PARTIE_2_SRC_DIR)/Main.java
+	jar -cvfe $(PARTIE_2_OUT_DIR)/$(PARTIE_2_JAR_NAME) Main -C $(PARTIE_2_OUT_DIR)/build .
+
 clean:
-	rm -rI $(PARTIE_0_OUT_DIR)
-	rm -rI $(PARTIE_1_OUT_DIR)
+	rm -rI $(PARTIE_0_OUT_DIR) || true
+	rm -rI $(PARTIE_1_OUT_DIR) || true
+	rm -rI $(PARTIE_2_OUT_DIR) || true
