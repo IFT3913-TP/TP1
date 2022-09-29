@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Main {
     private static final ArrayList<String[]> fileList = new ArrayList<>();
-    private static final ArrayList<String> inputLines = new ArrayList<>();
     private static File baseDirectory;
 
     public static void computeFileList(File path) {
@@ -57,23 +56,21 @@ public class Main {
 
     private static void readFromInput() {
         Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
+        if (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if (line.isEmpty()) break;
-            inputLines.add(line);
+            if (!line.isEmpty()) baseDirectory = new File(line.trim());
         }
     }
 
     public static void main(String[] args) {
         if (args.length == 1) {
             baseDirectory = new File(args[0].trim());
+            System.out.println(baseDirectory.getAbsolutePath());
             System.out.print(getCSVOutput());
-        } else {
+        } else if (args.length == 0) {
             readFromInput();
-            for (String line : inputLines) {
-                baseDirectory = new File(line.trim());
-                System.out.print(getCSVOutput());
-            }
+            System.out.println(baseDirectory.getAbsolutePath());
+            System.out.print(getCSVOutput());
         }
     }
 }

@@ -2,11 +2,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static final ArrayList<String> inputLines = new ArrayList<>();
     private static File file;
 
     private static int getNonEmptyLinesCount() {
@@ -27,23 +25,21 @@ public class Main {
 
     private static void readFromInput() {
         Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
+        if (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if (line == null || line.isEmpty()) break;
-            inputLines.add(line);
+            if (!line.isEmpty()) file = new File(line.trim());
         }
     }
 
     public static void main(String[] args) {
         if (args.length == 1) {
             file = new File(args[0].trim());
+            System.out.println(file.getAbsolutePath());
             System.out.println(getNonEmptyLinesCount());
-        } else {
+        } else if (args.length == 0) {
             readFromInput();
-            for (String line : inputLines) {
-                file = new File(line.trim());
-                System.out.println(getNonEmptyLinesCount());
-            }
+            System.out.println(file.getAbsolutePath());
+            System.out.println(getNonEmptyLinesCount());
         }
     }
 }
