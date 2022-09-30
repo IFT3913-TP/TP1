@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 import java.util.Map;
+
 public class Main {
     private static final ArrayList<ArrayList<String>> csvLines = new ArrayList<>();
     private static File baseDirectory;
@@ -39,7 +40,7 @@ public class Main {
     }
 
     private static boolean isWordInLine(String line, String word) {
-        Pattern pattern = Pattern.compile("\\b"+word+"\\b");
+        Pattern pattern = Pattern.compile("\\b" + word + "\\b");
         Matcher matcher = pattern.matcher(line);
         return matcher.find();
     }
@@ -60,7 +61,7 @@ public class Main {
         return found;
     }
 
-    private static void coupleDict(File path) {
+    private static void ComputeCoupleDict(File path) {
         File directory = new File(path.getAbsolutePath());
         File[] contents = directory.listFiles();
         if (contents != null) {
@@ -77,30 +78,27 @@ public class Main {
                                         if (coupleDict.containsKey(fileName.substring(0, extensionIndex - 1))) {
                                             String currentFileClassString = coupleDict.get(fileName.substring(0, extensionIndex - 1));
                                             if (!isWordInLine(currentFileClassString, itemLineClassName)) {
-                                                currentFileClassString+= " " + itemLineClassName;
+                                                currentFileClassString += " " + itemLineClassName;
                                                 coupleDict.put(fileName.substring(0, extensionIndex - 1), currentFileClassString);
                                             }
-                                        }
-                                         else {
+                                        } else {
                                             coupleDict.put(fileName.substring(0, extensionIndex - 1), itemLineClassName);
                                         }
                                     }
                                 }
                             }
-                            
                         }
                     }
                 } else {
                     File[] innerContents = f.listFiles();
                     if (innerContents != null) {
                         String fPath = f.getAbsolutePath();
-                        coupleDict(new File(fPath));
+                        ComputeCoupleDict(new File(fPath));
                     }
                 }
             }
         }
     }
-
 
     private static void readFromInput() {
         Scanner scanner = new Scanner(System.in);
@@ -113,26 +111,22 @@ public class Main {
 
     public static String getCSVOutput() {
         StringBuilder result = new StringBuilder();
-        coupleDict(baseDirectory);
-
+        ComputeCoupleDict(baseDirectory);
         for (ArrayList<String> fileInfos : csvLines) {
             String className = fileInfos.get(2).trim();
             String coupledClasses = coupleDict.get(className).trim();
             int score = coupledClasses.split(" ").length;
-            for (Map.Entry<String,String> entry : coupleDict.entrySet()) {
+            for (Map.Entry<String, String> entry : coupleDict.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 if (isWordInLine(value, className) && !isWordInLine(coupledClasses, key)) {
-                    score+=1;
+                    score += 1;
                 }
-
             }
-
             result.append(fileInfos.get(0)).append(", ");
             result.append(fileInfos.get(1)).append(", ");
             result.append(fileInfos.get(2)).append(", ");
             result.append(score).append("\n");
-
         }
         return result.toString();
     }
