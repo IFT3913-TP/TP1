@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.HashMap;
+import java.util.Map;
 public class Main {
     private static final ArrayList<ArrayList<String>> csvLines = new ArrayList<>();
     private static File baseDirectory;
-
-
+    private static Map<String, String> coupleDict = new HashMap<String, String>();
     private static File csvFile;
 
     private static boolean isValidFile(File f) {
@@ -38,31 +38,29 @@ public class Main {
         }
     }
 
-    private static int countWordInLine(String line, String word) {
-        Pattern pattern = Pattern.compile(word);
+    private static boolean isWordInLine(String line, String word) {
+        Pattern pattern = Pattern.compile("\\b"+word+"\\b");
         Matcher matcher = pattern.matcher(line);
-        int count = 0;
-        while (matcher.find()) count++;
-        return count;
+        return matcher.find();
     }
 
-    private static int countWordInFile(File file, String word) {
-        int count = 0;
+    private static boolean isWordInFile(File file, String word) {
+        boolean found = false;
         if (isValidFile(file)) {
             try {
                 Scanner scanner = new Scanner(file);
-                while (scanner.hasNextLine()) {
+                while (scanner.hasNextLine() && !found) {
                     String line = scanner.nextLine();
-                    count += countWordInLine(line, word);
+                    found = isWordInLine(line, word);
                 }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
-        return count;
+        return found;
     }
 
-    private static void computeLcsec(File path) {
+    private static void coupleDict(File path) {
         File directory = new File(path.getAbsolutePath());
         File[] contents = directory.listFiles();
         if (contents != null) {
@@ -72,22 +70,31 @@ public class Main {
                     if (fileName.contains(".")) {
                         int extensionIndex = fileName.lastIndexOf(".") + 1;
                         if (fileName.substring(extensionIndex).equals("java")) {
-                            for (ArrayList<String> classEntry : csvLines) {
-                                String className = classEntry.get(2);
-                                if (!className.equals(fileName.substring(0, extensionIndex - 1))) {
-                                    int n = Integer.parseInt(classEntry.get(3));
-                                    n += countWordInFile(f, className);
-                                    classEntry.set(3, Integer.toString(n));
+                            for (ArrayList<String> itemLineClass : csvLines) {
+                                String itemLineClassName = itemLineClass.get(2).trim();
+                                if (!itemLineClassName.equals(fileName.substring(0, extensionIndex - 1))) {
+                                    if (isWordInFile(f, itemLineClassName)) {
+                                        if (coupleDict.containsKey(fileName.substring(0, extensionIndex - 1))) {
+                                            String currentFileClassString = coupleDict.get(fileName.substring(0, extensionIndex - 1));
+                                            if (!isWordInLine(currentFileClassString, itemLineClassName)) {
+                                                currentFileClassString+= " " + itemLineClassName;
+                                                coupleDict.put(fileName.substring(0, extensionIndex - 1), currentFileClassString);
+                                            }
+                                        }
+                                         else {
+                                            coupleDict.put(fileName.substring(0, extensionIndex - 1), itemLineClassName);
+                                        }
+                                    }
                                 }
                             }
+                            
                         }
                     }
-
                 } else {
                     File[] innerContents = f.listFiles();
                     if (innerContents != null) {
                         String fPath = f.getAbsolutePath();
-                        computeLcsec(new File(fPath));
+                        coupleDict(new File(fPath));
                     }
                 }
             }
@@ -106,12 +113,26 @@ public class Main {
 
     public static String getCSVOutput() {
         StringBuilder result = new StringBuilder();
-        computeLcsec(baseDirectory);
+        coupleDict(baseDirectory);
+
         for (ArrayList<String> fileInfos : csvLines) {
+            String className = fileInfos.get(2).trim();
+            String coupledClasses = coupleDict.get(className).trim();
+            int score = coupledClasses.split(" ").length;
+            for (Map.Entry<String,String> entry : coupleDict.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (isWordInLine(value, className) && !isWordInLine(coupledClasses, key)) {
+                    score+=1;
+                }
+
+            }
+
             result.append(fileInfos.get(0)).append(", ");
             result.append(fileInfos.get(1)).append(", ");
             result.append(fileInfos.get(2)).append(", ");
-            result.append(fileInfos.get(3)).append("\n");
+            result.append(score).append("\n");
+
         }
         return result.toString();
     }
