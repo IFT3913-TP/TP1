@@ -23,5 +23,9 @@ make PARTIE_0
 After building you can for example launch *jls.jar* from *PARTIE_0* with : 
 
 ```Shell
-java -jar PARTIE_0/out/jls.jar
+java -jar PARTIE_0/out/jls.jar PATH_TO_DIRECTORY
+```
+You can also pipe between programs 
+```Shell
+java -jar PARTIE_0/out/jls.jar ../../ckjm/src/ | java -jar PARTIE_2/out/lcsec.jar | java -jar PARTIE_3/out/egon.jar 40
 ```
