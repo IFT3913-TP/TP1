@@ -18,8 +18,13 @@ PARTIE_2_JAR_NAME = lcsec.jar
 PARTIE_2_SRC_DIR = PARTIE_2/src
 PARTIE_2_OUT_DIR = PARTIE_2/out
 
+#PARTIE_1 TARGET SETTINGS
+PARTIE_3_JAR_NAME = egon.jar
+PARTIE_3_SRC_DIR = PARTIE_3/src
+PARTIE_3_OUT_DIR = PARTIE_3/out
+
 #TARGETS DEFINITIONS
-all: PARTIE_0 PARTIE_1 PARTIE_2
+all: PARTIE_0 PARTIE_1 PARTIE_2 PARTIE_3
 
 PARTIE_0:
 	javac $(JAVACFLAGS) -d $(PARTIE_0_OUT_DIR)/build $(PARTIE_0_SRC_DIR)/Main.java
@@ -33,7 +38,12 @@ PARTIE_2:
 	javac  $(JAVACFLAGS) -d $(PARTIE_2_OUT_DIR)/build $(PARTIE_2_SRC_DIR)/Main.java
 	jar -cvfe $(PARTIE_2_OUT_DIR)/$(PARTIE_2_JAR_NAME) Main -C $(PARTIE_2_OUT_DIR)/build .
 
+PARTIE_3:
+	javac  $(JAVACFLAGS) -d $(PARTIE_3_OUT_DIR)/build $(PARTIE_3_SRC_DIR)/Main.java $(PARTIE_3_SRC_DIR)/nvloc/Nvloc.java
+	jar -cvfe $(PARTIE_3_OUT_DIR)/$(PARTIE_3_JAR_NAME) Main -C $(PARTIE_3_OUT_DIR)/build .
+
 clean:
 	rm -rI $(PARTIE_0_OUT_DIR) || true
 	rm -rI $(PARTIE_1_OUT_DIR) || true
 	rm -rI $(PARTIE_2_OUT_DIR) || true
+	rm -rI $(PARTIE_3_OUT_DIR) || true
