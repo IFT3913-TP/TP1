@@ -136,9 +136,11 @@ public class Main {
             baseDirectory = new File(args[0].trim());
             csvFile = new File(args[1].trim());
             extractFromCSV();
+            System.out.println(baseDirectory.getAbsolutePath());
             System.out.print(getCSVOutput());
         } else if (args.length == 0) {
             readFromInput();
+            System.out.println(baseDirectory.getAbsolutePath());
             System.out.print(getCSVOutput());
         }
     }

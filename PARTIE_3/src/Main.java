@@ -116,7 +116,7 @@ public class Main {
                     if (Integer.parseInt(lcsec.trim())>Integer.parseInt(lcsecBis.trim())) countLcsec++;
                 }
             }
-            if (countNvloc>=csvLines.size()*(seuil/100) && countLcsec>=csvLines.size()*(seuil/100)) {
+            if (countNvloc>=csvLines.size()*(1-(seuil/100)) && countLcsec>=csvLines.size()*(1-(seuil/100))) {
                 suspectsLines.add(fileInfos);
             }
         }
